@@ -30,7 +30,8 @@ spec:
       initContainers:
         - name: init-postgre
           image: postgres:13.16
-          command: ['sh', '-c', 'until pg_isready -h localhost -p 5432; do sleep 1; done; psql -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB} -f /docker-entrypoint-initdb.d/init.sql']
+          #command: ['sh', '-c', 'until pg_isready -h localhost -p 5432; do sleep 1; done; psql -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB} -f /docker-entrypoint-initdb.d/init.sql']
+          command: ['sh', '-c', 'until pg_isready -h postgre -p 5432; do sleep 1; done; psql -h postgre -U ${POSTGRES_USER} -d ${POSTGRES_DB} -f /docker-entrypoint-initdb.d/init.sql']
           env:
             - name: POSTGRES_PASSWORD
               value: Pg1234
@@ -67,11 +68,11 @@ kind: Service
 metadata:
   name: postgre
 spec:
-  type: ClusterIP
+  selector:
+    app: postgre
   ports:
     - port: 5432
-  selector:
-    app: postgre  
+      targetPort: 5432
 
 ---
 apiVersion: apps/v1
@@ -79,7 +80,7 @@ kind: Deployment
 metadata:
   name: fakeshop
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: fakeshop
