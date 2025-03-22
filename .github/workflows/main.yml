@@ -4,17 +4,18 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
-  jobs:
-    CI:
-      runs-on: ubuntu-latest
-      steps:
-       - run: echo "obeter codigo"
-       - run: echo "Executar o Docker build"
-       - run: echo "Enviar a imaggem Docker para o Docker hub"
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "obeter codigo"
+      - run: echo "Executar o Docker build"
+      - run: echo "Enviar a imaggem Docker para o Docker hub"
 
-    CD:
-      runs-on: ubuntu-latest
-      steps:       
-       - run: echo "obeter codigo"
-       - run: echo "Executar o kubeconfig"
-       - run: echo "Executar apply"
+  CD:
+    needs: [CI]
+    runs-on: ubuntu-latest
+    steps:       
+      - run: echo "obeter codigo"
+      - run: echo "Executar o kubeconfig"
+      - run: echo "Executar apply"
