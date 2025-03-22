@@ -23,12 +23,26 @@ jobs:
           context: ./src
           push: true
           file: ./src/Dockerfile
-          tags: raco21/fake-shop-desafio:v${{ github.run_number }}
-
+          tags: |
+            raco21/fake-shop-desafio:v${{ github.run_number }}
+            raco21/fake-shop-desafio:latest
   CD:
     needs: [CI]
     runs-on: ubuntu-latest
     steps:       
-      - run: echo "obeter codigo"
-      - run: echo "Executar o kubeconfig"
-      - run: echo "Executar apply"
+      - name: Obtendo o codigo
+        uses: actions/checkout@v4.2.2
+
+      - name: Set Kubernetes Context
+        uses: Azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S_CONFIG }}
+
+      - name: Deploy to Kubernetes cluster
+        uses: Azure/k8s-deploy@v5     
+        with:
+          manifests: |
+            k8s/deployment.yaml
+          images: raco21/fake-shop-desafio:v${{ github.run_number }}
+          
