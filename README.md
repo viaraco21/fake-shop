@@ -11,3 +11,13 @@ DB_PASSWORD	=> Senha do usuário do banco de dados PostgreSQL.
 DB_NAME	=>	Nome do banco de dados PostgreSQL.
 
 DB_PORT	=>	Porta de conexão com o banco de dados PostgreSQL.
+
+# Arquivo README.md com instruções de execução.
+
+# Digitar no seu terminal
+
+git add .
+git commit -m "Iniciando Workflows"
+git push origin main
+
+E esperar a magica acontecer - CI/CD automatico
